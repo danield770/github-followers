@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { GetFollowers } from '../../services/--tagname=gql/GetFollowers';
 import { IHomePageState } from './types';
 
 const initialState: IHomePageState = {
