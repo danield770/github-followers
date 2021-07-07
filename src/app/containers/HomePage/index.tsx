@@ -1,76 +1,75 @@
-import React, { useEffect } from 'react';
-import githubService from '../../services/githubService';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFollowers } from '../utlis/fetch';
+import {
+  addUser,
+  addFollowersPage,
+  updateNameType,
+  selectNameType,
+} from './homePageSlice';
+import { IPaginationPage } from './types';
+import Followers from '../../components/Followers';
+import Pagination from '../../components/Pagination';
 
 interface IHomePageProps {}
 
-export function HomePage(props: IHomePageProps) {
-  //   async function handleCheckboxChange() {
-  //     handleAction({
-  //       type: 'UPDATE_CHECKBOX',
-  //       isAccountNames: !state.isAccountNames,
-  //     });
-  //     if (
-  //       !state.isAccountNames &&
-  //       state.names?.[state.depth - 1] &&
-  //       !state.usernames?.[state.depth - 1]
-  //     ) {
-  //       let accountNames = await fetchAccountNames(state.names[state.depth - 1]);
-  //       console.log('handleCheckboxChange: accountNames: ', accountNames);
-  //       handleAction({
-  //         type: 'ADD_USERNAMES',
-  //         usernames: accountNames,
-  //       });
-  //     }
-  //   }
-  const fetchFollowers = async () => {
-    const followers = await githubService
-      .getFollowers('zellwk')
-      .catch((err) => {
-        console.log('Error: ', err);
-      });
+const actionDispatch = (dispatch: Dispatch) => ({
+  setUsername: (user: string) => dispatch(addUser(user)),
+  setFollowersPage: (page: IPaginationPage) => dispatch(addFollowersPage(page)),
+  setNameType: (type: boolean) => dispatch(updateNameType(type)),
+});
 
-    console.log('Followers: ', followers);
-  };
+export function HomePage(props: IHomePageProps) {
+  const { setUsername, setFollowersPage, setNameType } = actionDispatch(
+    useAppDispatch()
+  );
+  const userRef = useRef<HTMLInputElement>(null);
+  const [user, setUser] = useState<string>();
+  const isAcccountNames = useAppSelector(selectNameType);
 
   useEffect(() => {
-    fetchFollowers();
-  }, []);
+    let cursor: string | undefined = undefined;
+    if (!user) return;
+    const fetch = async function () {
+      let page = await fetchFollowers(user, cursor);
+      console.log('page', page);
+      if (page) setFollowersPage(page);
+    };
+    fetch();
+  }, [user]);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // setLoading("loading");
+    console.log('formInput: ', userRef?.current?.value);
+    const formInput = userRef.current?.value;
+    formInput && setUser(formInput);
+    formInput && setUsername(formInput);
+  }
+
+  function handleNameToggle() {
+    setNameType(!isAcccountNames);
+  }
 
   return (
-    <main>Hello World</main>
-    // <main>
-    //   {console.log('hi')}
-    //   {console.log(state)}
-    //   <form onSubmit={handleSubmit}>
-    //     <input
-    //       type='text'
-    //       ref={userRef}
-    //       placeholder='Enter github login name'
-    //     />
-    //     <button>Display followers</button>
-    //     <div>
-    //       <input type='checkbox' id='cb' onChange={handleCheckboxChange} />
-    //       <label htmlFor='cb'>
-    //         Display followers' account names (rather than login names)
-    //       </label>
-    //     </div>
-    //   </form>
-    //   {loading === 'loading' && <div className='spinner'></div>}
-    //   {!!state.names.length && (
-    //     <Followers
-    //       user={user}
-    //       followers={state.isAccountNames ? state.usernames : state.names}
-    //       loading={loading}
-    //       navigation={navigation}
-    //       handleAction={handleAction}
-    //       fetchData={fetchData}
-    //       currentDepth={state.depth}
-    //       totalDepth={state.names.length}
-    //     />
-    //   )}
-    //   {state.names.length === 0 && loading === 'finished' && (
-    //     <div>Unfortunately {user} currently doesn't have any followers 😢</div>
-    //   )}
-    // </main>
+    <main>
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          ref={userRef}
+          placeholder='Enter github login name'
+        />
+        <button>Display followers</button>
+        <div>
+          <input type='checkbox' id='cb' onChange={handleNameToggle} />
+          <label htmlFor='cb'>
+            Display followers' account names (rather than login names)
+          </label>
+        </div>
+      </form>
+      <Pagination />
+      <Followers />
+    </main>
   );
 }

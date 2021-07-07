@@ -25,10 +25,6 @@ export interface GetFollowers_user_followers_edges {
    * The item at the end of the edge.
    */
   node: GetFollowers_user_followers_edges_node | null;
-  /**
-   * A cursor for use in pagination.
-   */
-  cursor: string;
 }
 
 export interface GetFollowers_user_followers_pageInfo {
@@ -76,4 +72,5 @@ export interface GetFollowers {
 
 export interface GetFollowersVariables {
   user: string;
+  cursor?: string | null;
 }

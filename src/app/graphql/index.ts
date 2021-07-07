@@ -1,11 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-require('dotenv').config();
-
-console.log('node env', process.env.NODE_ENV);
-
-const TOKEN = process.env.REACT_APP_PAT;
+const TOKEN = process.env.REACT_APP_TOKEN;
 
 const httpLink = createHttpLink({
   uri: 'https://api.github.com/graphql',
@@ -13,7 +9,6 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   // return the headers to the context so httpLink can read them
-  console.log('token: ', TOKEN);
   return {
     headers: {
       ...headers,

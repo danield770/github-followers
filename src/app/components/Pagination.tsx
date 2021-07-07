@@ -1,63 +1,63 @@
-// function Pagination({
-//   paginationObj,
-//   handleAction,
-//   currentDepth,
-//   totalDepth,
-//   fetchData,
-// }) {
-//   async function handlePaginationClick(link, url) {
-//     let newDepth;
-//     let newFollowers;
-//     if (link === 'prev') {
-//       newDepth = currentDepth - 1;
-//       // handleAction({ type: "UPDATE_DEPTH", depth: newDepth });
-//     }
-//     if (link === 'next') {
-//       newDepth = currentDepth + 1;
-//       // console.log("newDepth: ", newDepth);
-//       // console.log("totalDepth: ", totalDepth);
-//       if (newDepth > totalDepth) {
-//         let res = await fetchData(url, 'addFollowers');
-//         newFollowers = res.map((user) => user.login);
-//         // console.log("res (addFollowers)", newFollowers);
-//       }
-//     }
-//     // console.log("newDepth: ", newDepth);
-//     // console.log("currentDepth: ", currentDepth);
-//     !!newFollowers &&
-//       newDepth !== currentDepth &&
-//       handleAction({
-//         type: 'ADD_FOLLOWERS',
-//         names: newFollowers,
-//       });
-//     handleAction({ type: 'UPDATE_DEPTH', depth: newDepth });
-//   }
-//   return (
-//     <div className='pagination-buttons'>
-//       {!!paginationObj.prev && currentDepth > 1 && (
-//         <button
-//           title={paginationObj.prev}
-//           type='button'
-//           onClick={() => handlePaginationClick('prev', paginationObj.prev)}
-//         >
-//           &lsaquo; Show previous 30 followers
-//         </button>
-//       )}
-//       {(!!paginationObj.next || currentDepth < totalDepth) && (
-//         <button
-//           title={paginationObj.next}
-//           type='button'
-//           onClick={() => handlePaginationClick('next', paginationObj.next)}
-//         >
-//           Show more followers &rsaquo;
-//         </button>
-//       )}
-//     </div>
-//   );
-// }
+import React from 'react';
+import { Dispatch } from 'redux';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import {
+  addFollowersPage,
+  updateDepth,
+  selectUser,
+  selectDepth,
+  selectPaginationInfo,
+} from '../containers/HomePage/homePageSlice';
+import { IPaginationPage } from '../containers/HomePage/types';
+import { fetchFollowers } from '../containers/utlis/fetch';
+
+const actionDispatch = (dispatch: Dispatch) => ({
+  setFollowersPage: (page: IPaginationPage) => dispatch(addFollowersPage(page)),
+  setDepth: (num: number) => dispatch(updateDepth(num)),
+});
 
 function Pagination() {
-  return 'Pagination';
+  const user = useAppSelector(selectUser);
+  const depth = useAppSelector(selectDepth);
+  const paginationInfo = useAppSelector(selectPaginationInfo);
+  const { setFollowersPage, setDepth } = actionDispatch(useAppDispatch());
+
+  function handlePrevClick() {
+    setDepth(-1);
+  }
+
+  function handleNextClick() {
+    const fetch = async function () {
+      let page = await fetchFollowers(user, paginationInfo[0]);
+      console.log('page: nextclick', page);
+      if (page) setFollowersPage(page);
+    };
+    fetch();
+    setDepth(1);
+  }
+
+  return (
+    <div className='pagination-buttons'>
+      {depth > 1 && (
+        <button
+          title={`${1 + 30 * (depth - 2)} - ${30 * (depth - 1)}`}
+          type='button'
+          onClick={handlePrevClick}
+        >
+          &lsaquo; Show previous 30 followers
+        </button>
+      )}
+      {paginationInfo[1] && (
+        <button
+          title={`${1 + 30 * depth} - ${30 * (depth + 1)}`}
+          type='button'
+          onClick={handleNextClick}
+        >
+          Show more followers &rsaquo;
+        </button>
+      )}
+    </div>
+  );
 }
 
 export default Pagination;

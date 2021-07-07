@@ -1,44 +1,34 @@
-//import Pagination from './Pagination';
+import React from 'react';
 
-// function Followers({
-//   user,
-//   followers,
-//   navigation,
-//   currentDepth,
-//   totalDepth,
-//   handleAction,
-//   fetchData,
-// }) {
-//   // const startCount = 30*(depth-1)+1;
-//   return (
-//     <section>
-//       {console.log('followers: ', followers)}
-//       <h3>{user}'s followers</h3>
-//       {Object.keys(navigation).length > 0 && (
-//         <Pagination
-//           paginationObj={navigation}
-//           handleAction={handleAction}
-//           currentDepth={currentDepth}
-//           totalDepth={totalDepth}
-//           fetchData={fetchData}
-//         />
-//       )}
-//       <ol
-//         className='followers'
-//         style={{ '--start-count': 30 * (currentDepth - 1) }}
-//       >
-//         {followers?.[currentDepth - 1]?.map((follower) => (
-//           <li className='follower' key={follower}>
-//             {follower}
-//           </li>
-//         ))}
-//       </ol>
-//     </section>
-//   );
-// }
+import { useAppSelector } from '../hooks';
+import {
+  selectUser,
+  selectCurrentNames,
+  selectNameType,
+  selectDepth,
+} from '../containers/HomePage/homePageSlice';
 
 function Followers() {
-  return 'Followers';
+  const user = useAppSelector(selectUser);
+  const names = useAppSelector(selectCurrentNames);
+  const isAccountNames = useAppSelector(selectNameType);
+  const depth = useAppSelector(selectDepth);
+  var listStyle = { '--start-count': 30 * (depth - 1) } as React.CSSProperties;
+
+  return (
+    <ol className='followers' style={listStyle}>
+      {names?.length === 0 && (
+        <div>Unfortunately {user} currently doesn't have any followers 😢</div>
+      )}
+      {names?.map((follower) => (
+        <li className='follower' key={follower[0]}>
+          {isAccountNames
+            ? follower[1] || '- No name specified -'
+            : follower[0]}
+        </li>
+      ))}
+    </ol>
+  );
 }
 
 export default Followers;
