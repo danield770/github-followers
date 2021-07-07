@@ -40,6 +40,7 @@ function Pagination() {
     <div className='pagination-buttons'>
       {depth > 1 && (
         <button
+          className='btn prev'
           title={`${1 + 30 * (depth - 2)} - ${30 * (depth - 1)}`}
           type='button'
           onClick={handlePrevClick}
@@ -49,6 +50,7 @@ function Pagination() {
       )}
       {paginationInfo[1] && (
         <button
+          className='btn next'
           title={`${1 + 30 * depth} - ${30 * (depth + 1)}`}
           type='button'
           onClick={handleNextClick}

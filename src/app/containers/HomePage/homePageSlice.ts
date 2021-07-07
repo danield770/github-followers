@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { IHomePageState } from './types';
 
-const initialState: IHomePageState = {
+export const initialState: IHomePageState = {
   followersPages: [],
   user: '',
   isAccountName: false,
@@ -16,6 +16,7 @@ const HomePageSlice = createSlice({
     addUser: (state, action) => {
       state.user = action.payload;
       state.followersPages = [];
+      state.depth = 1;
     },
     addFollowersPage: (state, action) => {
       state.followersPages = [...state.followersPages, action.payload];

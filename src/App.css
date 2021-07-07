@@ -1,39 +1,119 @@
+body {
+  margin: 0;
+}
+:root {
+  --color: hsla(270, 50%, 40%, 1);
+}
+#root {
+  height: 100vh;
+  place-content: center;
+  display: flex;
+}
+main {
+  width: 40rem;
+  height: 80vh;
+  border: 2px solid var(--color);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+  grid-gap: 1rem 2rem;
+}
+
+.input {
+  padding: 0.5rem;
+  border: 1px solid var(--color);
+  border-radius: 0.4rem;
+}
+.btn {
+  color: var(--color);
+  border: 0;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  background: none;
+}
+
+.btn--primary {
+  background: var(--color);
+  color: white;
+}
+.checkbox-wpr {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto auto;
+  height: 3rem;
+  position: relative;
+}
+.checkbox {
+  display: none;
+}
+label {
+  cursor: pointer;
+}
+
+.checkbox + label:after {
+  content: '';
+  --pos: 27;
+  display: inline-block;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 1rem;
+  position: absolute;
+  border: 2px solid var(--color);
+  left: 7rem;
+  top: 0.5rem;
+  padding: 0.2rem;
+  box-sizing: border-box;
+  background: radial-gradient(
+    circle at calc(var(--pos) * 1%),
+    var(--color) 25%,
+    transparent 27%
+  );
+}
+.checkbox:checked + label:after {
+  --pos: 73;
+}
+
 .followers {
   counter-set: count var(--start-count);
   list-style-type: none;
 }
+.followers--empty {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .follower {
   position: relative;
+}
+.follower-empty {
+  color: red;
 }
 .follower:before {
   content: counter(count) '.';
   counter-increment: count;
   position: absolute;
-  left: -2rem;
+  left: -2.5rem;
 }
 .pagination-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 2rem;
 }
-.pagination-buttons button {
-  border: 0;
-  background: none;
-  cursor: pointer;
-  color: blue;
+.prev {
+  grid-column: 1/2;
+  justify-self: start;
 }
-.spinner {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin: 3rem;
-  border: 2px solid aqua;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  animation: spin 0.5s linear infinite;
+.next {
+  grid-column: 2/2;
+  justify-self: end;
 }
-
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.error-msg {
+  color: red;
 }

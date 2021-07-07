@@ -3,11 +3,11 @@ import githubService from '../../services/githubService';
 import { IPaginationPage } from '../HomePage/types';
 
 export const fetchFollowers = async (user: string, cursor: any) => {
-  console.log('getfollowers(user,cursor): ', user, cursor);
+  // console.log('getfollowers(user,cursor): ', user, cursor);
   const response: void | GetFollowers_user | null = await githubService
     .getFollowers(user, cursor)
     .catch((err) => {
-      console.log('Error: ', err);
+      throw err;
     });
 
   if (!response) return;
