@@ -1,10 +1,35 @@
-github-followers
+## github-followers
 
 packages used:
 
 @apollo/client graphql (see https://www.apollographql.com/docs/react/get-started/)
 
 bootstapped with: npx create-react-app my-app --template redux-typescript
+
+The project is also live on github pages at: 
+
+https://danield770.github.io/github-followers/
+
+However, there is currently an issue with the online version:
+
+In order to query the github api - you need a personal access token.
+
+I included mine via an environment variable, but it doesn't seem to work on the online version.
+
+So for now, in order to see this working, you need to:
+
+1) clone the repo
+2) npm i
+3) add in the root directory a file called .env.local
+4) add your own github personal access token in the file like so:
+
+REACT_APP_TOKEN="<YOUR_VALID_TOKEN>"
+
+5) npm start
+
+Thanks
+
+--
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
