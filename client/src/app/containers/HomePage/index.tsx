@@ -35,7 +35,7 @@ export function HomePage(props: IHomePageProps) {
     const fetch = async function () {
       try {
         let page = await fetchFollowers(user, cursor);
-        // console.log('page', page);
+        console.log('page', page);
         if (page) setFollowersPage(page);
         setErrorMsg('');
       } catch (error) {
