@@ -27,7 +27,7 @@ app.use(cors());
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-app.get('/', async (req, res) => {
+app.get('/api', async (req, res) => {
   // The query that gets profile information
   const query = gql`
     query ($user: String!, $cursor: String) {
