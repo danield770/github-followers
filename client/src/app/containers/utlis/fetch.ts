@@ -1,7 +1,7 @@
 import { IPaginationPage } from '../HomePage/types';
 
 export const fetchFollowers = async (user: string, cursor: any) => {
-  const BASE_URL = 'http://localhost:8080/github-followers';
+  const BASE_URL = 'http://localhost:8080/';
   try {
     let url =
       cursor === undefined

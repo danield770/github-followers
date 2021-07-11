@@ -13,6 +13,7 @@ require('dotenv').config();
 // Do not have your token in a string in your code, especially if you use source control
 // https://medium.com/codait/environment-variables-or-keeping-your-secrets-secret-in-a-node-js-app-99019dfff716
 const TOKEN = process.env.TOKEN;
+// console.log('TOKEN: ', TOKEN);
 
 // Create the graphQL client
 const graphQLClient = new GraphQLClient(url, {
@@ -26,7 +27,7 @@ app.use(cors());
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-app.get('/github-followers', async (req, res) => {
+app.get('/', async (req, res) => {
   // The query that gets profile information
   const query = gql`
     query ($user: String!, $cursor: String) {
