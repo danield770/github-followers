@@ -63,6 +63,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

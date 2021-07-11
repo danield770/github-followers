@@ -1,7 +1,8 @@
 import { IPaginationPage } from '../HomePage/types';
 
 export const fetchFollowers = async (user: string, cursor: any) => {
-  const BASE_URL = 'http://localhost:8080/';
+  const port = process.env.PORT || 8080;
+  const BASE_URL = `http://localhost:${port}/`;
   try {
     let url =
       cursor === undefined
