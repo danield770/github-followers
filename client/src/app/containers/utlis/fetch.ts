@@ -11,7 +11,10 @@ export const fetchFollowers = async (user: string, cursor: any) => {
     // console.log('url: ', url);
     const response = await fetch(url);
     const result = await response.json();
-    // console.log('result', result);
+    // console.log('result: ', result);
+    if (typeof result === 'string') {
+      throw new Error(result);
+    }
 
     let page: IPaginationPage = {
       names: result?.user?.followers?.edges?.map((edge: any) => [
@@ -24,6 +27,7 @@ export const fetchFollowers = async (user: string, cursor: any) => {
 
     return page;
   } catch (error) {
+    console.log('fetchFollowers: ', error);
     throw error;
   }
 };

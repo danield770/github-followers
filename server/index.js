@@ -52,8 +52,11 @@ app.get('/api', async (req, res) => {
     user: req.query.user,
     cursor: req.query.cursor,
   };
+
   // Make Graphql call
-  const githubRes = await graphQLClient.request(query, variables);
+  const githubRes = await graphQLClient.request(query, variables).catch((e) => {
+    res.json(e.response.errors[0].message);
+  });
   // Respond with results
   res.json(githubRes);
 });

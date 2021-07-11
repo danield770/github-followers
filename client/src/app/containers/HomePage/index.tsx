@@ -77,10 +77,12 @@ export function HomePage(props: IHomePageProps) {
             id='cb'
             onChange={handleNameToggle}
           />
-          <label className='' htmlFor='cb'>
+          <label className='cb-label1' htmlFor='cb'>
             Login Names
           </label>
-          <label htmlFor='cb'>Account Names</label>
+          <label className='cb-label2' htmlFor='cb'>
+            Account Names
+          </label>
         </div>
       </form>
       <Pagination />
